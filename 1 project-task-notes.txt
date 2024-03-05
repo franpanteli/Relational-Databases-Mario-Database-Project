@@ -1,4 +1,23 @@
-These are my notes on the project task page. This project is called "Learn Bash by Building a Boilerplate." The URL for the page which these notes are on is https://www.freecodecamp.org/learn/relational-database/learn-bash-by-building-a-boilerplate/build-a-boilerplate
+These are my notes on the project task page. This project is called "Build a Mario Database." The URL for the page which these notes are on is https://www.freecodecamp.org/learn/relational-database/learn-relational-databases-by-building-a-mario-database/build-a-mario-database  
 
-- UPDATE 
-	-> NOTES ON THE TASK 
+- This project is about creating a PostgreSQL database:
+	-> We are filling this database with Mario video game characters
+	-> There are 165 lessons in this <- the first project was ~170, but this content is more complex 
+	-> The environment that this project is completed in is the same as with the previous project in the course  
+
+- To run the project: 
+	Open the Gitpod environment:
+		-> We are using a virtual Linux machine 
+		-> This is run with Gitpod <- like VSCode, but in the browser 
+		-> On the webpage that these notes are made on, you click "start the course" 
+		-> This opens a Gitpod environment 
+
+	Then you start the CodeRoad extension: 
+		-> Click the "hamburger" menu at the top LHS of the Gitpod window 
+		-> Then click the "View" menu 
+		-> Click on the "Command Palette" option 
+		-> Then run "CodeRoad: Start"
+		-> Then you follow the instructions in CodeRoad and complete the guided project 
+
+	-> They want you to complete it in their environment, so when it is submitted integration tests can run 
+	-> You need to complete the entire guided project in Gitpod, while you are logged onto the freeCodeCamp UI - or your progress won't be logged 
