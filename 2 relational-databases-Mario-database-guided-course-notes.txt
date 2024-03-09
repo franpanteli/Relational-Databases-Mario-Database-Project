@@ -1,1 +1,117 @@
-INSERT IF NEEDED -> COURSE NOTES
+-> psql --username=freecodecamp --dbname=postgres <- to log into the PostgreSQL virtual machine 
+
+TO CREATE A NEW DATABASE: 
+	-> \l <- To see what databases there are (list)
+	-> CREATE DATABASE database_name; <- To create a database 
+
+TO CONNECT TO A DATABASE:
+	-> \c database_name
+		-> This has to be done before new information is added to said database 
+
+TO VIEW INFORMATION IN A DATABASE:
+	-> \d <- This prints the tables which make up the database in the terminal 
+		-> This is the display/ details command 
+	-> \d table_name <- For more metadata about a table
+		-> You don't need a semi-colon at the end of using this line (in the Gitpod environment which the guided project is to be completed in) 
+	-> SELECT column_one, column_two_optional FROM table_name; <- To view data in the table 
+		-> NULL data is blank in the table 
+		-> You can replace `columns` with * (all of the columns)
+	-> SELECT columns FROM table_name ORDER BY column_name; <- To organise/ order the data in a database 
+		-> Columns can equal * <- if you want to order all of them in the table 
+	-> SELECT columns FROM table_name WHERE condition; <- To return the rows from a database which satisfy a given condition 
+
+TO EDIT A DATABASE:
+	-> CREATE TABLE table_name(); <- This adds a table to the database you are connected to 
+		-> CREATE TABLE table_name(column_name DATATYPE CONSTRAINTS); <- The column names of the table you want to add go inside the parenthesis, along with its other parameters 
+			-> PRIMARY KEY <- This is an example of a `constraint`
+			-> DATATYPE <- for example SERIAL  
+	-> ALTER TABLE table_name ADD COLUMN column_name DATATYPE; <- To add a column to the table 		DATATYPE examples:
+			-> INT <- Integer
+			-> VARCHAR(30) <- This is a short string of characters 
+				-> The argument of this is the maximum amount of characters
+				-> 'like this'
+			-> SERIAL <- You would use this for example, when the elements in your database have unique serial numbers 
+				-> This makes the column an integer which isn't 0
+				-> When new rows are added, this integer will automatically increment 
+			-> DATE <- '1981-07-09' (like a string)
+			-> NUMERIC(4, 1) <- There are up to four digits and one of them has to be to the right of the decimal; decimals  
+			-> DATATYPE <- this is a combination of all of the datatypes we want to filter for (for example INT NOT NULL)
+			-> ALTER TABLE table_name ADD PRIMARY KEY(column_name); <- To add in a primary key (a column which uniquely identifies each row in your current table)
+				-> You choose the 'primary key' to be a unique value in the table 
+				-> There can only be one primary key per table
+			-> ALTER TABLE characters ADD PRIMARY KEY(name); <- to remove a constraint on a table (in this case to remove its primary key)
+				-> In this example they found the constraint_name by using `\d table_name` 
+		-> ALTER TABLE characters ADD COLUMN name VARCHAR(30) NOT NULL; <- To add multiple conditions to the datatype when adding a new column (VARCHAR(30) and NOT NULL)
+			-> Null values show up as blank in tables 
+			-> You can also do something like NOT NULL UNIQUE <- You are listing all of the constraints at the end of the query 
+
+	-> ALTER TABLE table_name DROP COLUMN column_name; <- To delete columns from a table 
+	-> DELETE FROM table_name WHERE condition; <- To delete a row from a table (a record)
+		-> For example, a condition of "username='Luigi'"
+	-> ALTER TABLE table_name RENAME COLUMN column_name TO new_name; <- To rename a column
+		-> You can rename the columns with the units of the quantities stored in a table, if those quantities are numerical 
+	-> UPDATE table_name SET column_name=new_value WHERE condition; <- To change a value in an entry in the table 
+		-> You use character IDs in this example so that you can specifically target and change one element in the database 
+	-> INSERT INTO table_name(column_1, column_2) VALUES(value1, value2); <- To add, insert a row into a database  
+		-> If the value is a character or string, 'this syntax'
+			-> In this example, the strings contain filenames 
+		-> This array can have a length > 2
+		-> To add multiple rows into a database at the same time:
+		-> Values can also be NULL, or if you don't have any for a particular field you can omit them 
+			-> We are listing multiple different values (each of them for the different rows the same command is adding into the table)
+
+INSERT INTO characters(name, homeland, favorite_color)
+VALUES('Mario', 'Mushroom Kingdom', 'Red'),
+('Luigi', 'Mushroom Kingdom', 'Green'),
+('Peach', 'Mushroom Kingdom', 'Pink');
+
+	-> ALTER DATABASE database_name RENAME TO new_database_name; <- To rename a database 
+
+TO DELETE A TABLE:
+	-> DROP TABLE table_name; <- To delete a table from the database 
+
+TO DELETE A DATABASE:
+	-> DROP DATABASE second_database; <- To delete a database 
+
+FOREIGN KEYS:	
+	-> ALTER TABLE table_name ADD COLUMN column_name DATATYPE REFERENCES referenced_table_name(referenced_column_name);
+		-> These relate rows of one table to rows of another table 
+		-> Each of the rows having their own unique identifier in the table <- this is the primary key 
+		-> This course is on relational databases (we are relating the contents of one database to another)
+		-> This key is used for cross referencing between different databases 
+		-> We are creating another column to store these foreign keys
+		-> One example of a DATATYPE when you are doing this is INT NOT NULL <- it's not a datatype, it's the combination of datatypes that we want to filter for 
+	-> \d table_name <- These keys are shown at the bottom of what this returns 
+	-> ALTER TABLE table_name ADD UNIQUE(column_name); <- To add a constraint to a foreign key 
+		-> In this example it's the UNIQUE constraint, and the foreign key is a 1:1 mapping between the rows of two tables 
+	-> ALTER TABLE table_name ALTER COLUMN column_name SET NOT NULL; <- To force the elements in the column for the foreign keys not to have null values 
+	-> ALTER TABLE table_name ADD FOREIGN KEY(column_name) REFERENCES referenced_table(referenced_column); <- To add an existing column as a foreign key (rather than making one for this)
+		-> This is what you use to set one column as a foreign key which references an attribute from another table 
+
+COMPOSITE PRIMARY KEYS:
+	To add these keys:
+		-> To create a primary key from multiple columns in a table 
+		-> ALTER TABLE table_name ADD PRIMARY KEY(column1, column2);
+		-> You can also make a primary key from a single column in the table 
+		-> Using a single row for this isn't enough if the elements in its table aren't unique 
+
+	To get the data from both of the tables which make up the composite keys: 
+		-> This is done with the `join` command 
+		-> SELECT columns FROM table_1 FULL JOIN table_2 ON table_1.primary_key_column = table_2.foreign_key_column;
+			-> columns can be * <- all of them 
+		-> They are connected via linked keys 
+		-> One to many relationships 
+
+	To have these keys join multiple tables (example):
+
+SELECT columns FROM junction_table
+FULL JOIN table_1 ON junction_table.foreign_key_column = table_1.primary_key_column
+FULL JOIN table_2 ON junction_table.foreign_key_column = table_2.primary_key_column;
+		-> We are viewing / creating connections between three different tables 
+		-> These connections are composite keys 
+
+SYNTAX POINTS:
+	-> You need a semi-colon after each line 
+	-> The text in the terminal before the cursor is called the prompt 
+	-> A 'record' is the same as a row
+	-> You should get a message after entering a line of code - else it has a higher likelihood of being incomplete 
